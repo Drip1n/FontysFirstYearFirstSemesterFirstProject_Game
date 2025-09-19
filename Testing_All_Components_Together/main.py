@@ -2,56 +2,56 @@
 import utime
 import hardware_manager as hw
 
-# --- Inicializácia Všetkých Objektov ---
+# --- Initialize All Objects ---
 display = hw.Display()
 buzzer = hw.Buzzer()
 leds = hw.LEDs()
 inputs = hw.InputHandler()
 
-# --- Premenné pre Správu Stavu ---
+# --- Variables for State Management ---
 current_screen = "MENU" 
-last_pressed_button = None # Budeme si pamätať posledné stlačené tlačidlo pre UI
+last_pressed_button = None # We'll remember the last pressed button for the UI
 input_counts = {
     "Bit 0": 0, "Bit 1": 0, "Bit 2": 0, "Bit 3": 0
 }
 
-# --- Funkcie ---
+# --- Functions ---
 def run_startup_sequence():
-    """Spustí úvodnú sekvenciu."""
+    """Runs the startup sequence."""
     display.draw_main_menu()
     buzzer.play_startup_sound()
     leds.blink_all()
 
 def reset_counts():
-    """Vynuluje počítadlá a prekreslí obrazovku."""
+    """Resets the counters and redraws the screen."""
     global last_pressed_button
     last_pressed_button = None
     for key in input_counts:
         input_counts[key] = 0
-    # Prekreslíme s vynulovanými hodnotami
+    # Redraw with reset values
     display.draw_counter_screen(input_counts, last_pressed_button, True)
 
-# --- Spustenie Programu ---
+# --- Program Start ---
 run_startup_sequence()
 
-# --- Hlavná Nekonečná Slučka ---
+# --- Main Infinite Loop ---
 while True:
     pressed_button = inputs.check_press()
     
     if pressed_button:
-        # --- LOGIKA PRE OBRAZOVKU MENU ---
+        # --- LOGIC FOR THE MENU SCREEN ---
         if current_screen == "MENU":
             if pressed_button == "Confirm":
                 current_screen = "COUNTER_TEST"
-                reset_counts() # Resetuje a zároveň prekreslí prvú obrazovku
+                reset_counts() # Resets and simultaneously redraws the first screen
         
-        # --- LOGIKA PRE OBRAZOVKU TESTOVANIA POČÍTADIEL ---
+        # --- LOGIC FOR THE COUNTER TEST SCREEN ---
         elif current_screen == "COUNTER_TEST":
             
             if pressed_button in input_counts:
                 input_counts[pressed_button] += 1
-                last_pressed_button = pressed_button # Uložíme posledný vstup
-                # Prekreslíme obrazovku s novými dátami
+                last_pressed_button = pressed_button # Save the last input
+                # Redraw the screen with the new data
                 display.draw_counter_screen(input_counts, last_pressed_button, False)
             
             elif pressed_button == "Cancel":

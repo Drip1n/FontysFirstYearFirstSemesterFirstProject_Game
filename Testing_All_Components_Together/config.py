@@ -1,13 +1,13 @@
-# config.py - Centrálne nastavenia pinov a hardvéru
+# config.py - Central pin and hardware settings
 
-# I2C Displej (OLED 128x32)
+# I2C Display (OLED 128x64)
 PIN_SCL = 1
 PIN_SDA = 0
 DISPLAY_WIDTH = 128
 DISPLAY_HEIGHT = 64
 I2C_ADDRESS = 0x3C
 
-# Tlačidlá
+# Buttons
 BUTTON_PINS = {
     "Bit 0": 2,
     "Bit 1": 3,
@@ -17,10 +17,10 @@ BUTTON_PINS = {
     "Cancel": 7
 }
 
-# Výstupy
+# Outputs
 BUZZER_PIN = 10
 GREEN_LED_PIN = 14
 RED_LED_PIN = 15
 
-# Nastavenia
+# Settings
 DEBOUNCE_DELAY_MS = 200
